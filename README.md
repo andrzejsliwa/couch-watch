@@ -16,8 +16,8 @@ To suggest a feature, report a bug, or general discussion:
 Related projects:
 =================
   
-  * [couch-watch-js](https://github.com/andrzejsliwa/couch-watch-js)
-  * [couch-watch-rb](https://github.com/andrzejsliwa/couch-watch-rb)
+  * [couch-watch-js](https://github.com/andrzejsliwa/couch-watch-js) - CouchWatch JavaScript Client
+  * [couch-watch-rb](https://github.com/andrzejsliwa/couch-watch-rb) - CouchWatch Ruby Client
 
 Installation & first run:
 =========================
