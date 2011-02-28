@@ -17,13 +17,9 @@ GEM
       version_sorter (>= 1.1.0)
       yajl-ruby
     json (1.4.6)
-    jstdutil (0.3.5)
-      rake
-      watchr
     mime-types (1.16)
     mustache (0.11.2)
     rack (1.2.1)
-    rake (0.8.7)
     rb-fsevent (0.3.10)
     rest-client (1.6.1)
       mime-types (>= 1.16)
@@ -49,7 +45,7 @@ PLATFORMS
 
 DEPENDENCIES
   couchrest (~> 1.0.1)
-  jstdutil
   rb-fsevent
   ruby-growl
   soca (~> 0.1.2)
+  watchr (~> 0.7)

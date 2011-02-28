@@ -2,6 +2,7 @@ source 'http://rubygems.org'
 
 gem 'soca', '~> 0.1.2'
 gem 'couchrest', '~> 1.0.1'
+gem 'watchr', '~> 0.7'
 
 if RUBY_PLATFORM =~ /darwin/
   group :test do
