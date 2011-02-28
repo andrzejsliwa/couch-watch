@@ -10,3 +10,11 @@ May be freely distributed under the MIT license.
 To suggest a feature, report a bug, or general discussion:
 
   http://github.com/andrzejsliwa/couch-watch/issues/
+  
+
+Installation & first run:
+ 
+  $ bundle install
+  $ cp .couchapprc.example .couchapprc  # customize .couchpprc here
+  $ soca push
+  
