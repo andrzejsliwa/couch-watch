@@ -1,0 +1,13 @@
+{
+  "env": {
+    "default": {
+      "db": "http://localhost:5984/couchwatch"
+    },
+    "test": {
+      "db": "http://localhost:5984/couchwatch-test"
+    },
+    "production": {
+      "db": "http://example.org:5984/couchwatch"
+    }
+  }
+}

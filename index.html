@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CouchWatch</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet/less" type="text/css" href="css/styles.less">
+    <script type="text/javascript" src="js/vendor/LAB.min.js"></script>
+    <script type="text/javascript">
+      $LAB
+      .script("js/vendor/less.js")
+      .script("js/vendor/jquery.js").wait()
+      .script("js/vendor/jquery.couch.js").wait()
+      .script("js/vendor/underscore.js").wait()
+      .script("js/vendor/backbone.js").wait()
+      .script("js/vendor/backbone.couchdb.js").wait(function() {
+
+        window.CouchWatch = {};
+        Backbone.couchConnector.databaseName = "couchwatch";
+        Backbone.couchConnector.ddocName = "couchwatch";
+        Backbone.couchConnector.viewName = "byCollection";
+        Backbone.couchConnector.enableChanges = true;
+      })
+      .script("js/couchwatch.js")
+    </script>
+  </head>
+  <body>
+    <div id="content">
+      nothing here yet...
+    </div>
+  </body>
+</html>
