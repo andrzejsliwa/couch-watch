@@ -5,14 +5,15 @@
 | \_____| |_| | |_| ( (___| | | | |___| ( ( | | |__( (___| | | |
  \______)\___/ \____|\____)_| |_|\______|\_||_|\___)\____)_| |_|
  
-May be freely distributed under the MIT license.
+May be freely distributed under the [MIT license](https://github.com/andrzejsliwa/couch-watch/raw/master/LICENSE).
 
 To suggest a feature, report a bug, or general discussion:
 
-  http://github.com/andrzejsliwa/couch-watch/issues/
+  [Issues](http://github.com/andrzejsliwa/couch-watch/issues/)
   
 
 Installation & first run:
+=========================
  
   $ bundle install
   $ cp .couchapprc.example .couchapprc  # customize .couchpprc here
