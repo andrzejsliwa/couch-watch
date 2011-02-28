@@ -20,6 +20,7 @@
         Backbone.couchConnector.ddocName = "couchwatch";
         Backbone.couchConnector.viewName = "byCollection";
         Backbone.couchConnector.enableChanges = true;
+        Backbone.couchConnector.handleRestartApplicaton();
       })
       .script("js/couchwatch.js")
       .script("spec/vendor/jasmine.js").wait()
@@ -28,7 +29,7 @@
       .script("spec/vendor/jquery.mockjax.js")
       .script("spec/spec.helper.js").wait()
       .script("spec/spec.js").wait(function() {
-        
+
         var jasmineEnv = jasmine.getEnv(),
           trivialReporter = new jasmine.TrivialReporter();
 

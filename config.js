@@ -1,5 +1,5 @@
 {
-  "id": "tweeti",
+  "id": "couchwatch",
   "mapDirectories": {
     "config.js": "",
     "favicon.ico": "_attachments/favicon.ico",
