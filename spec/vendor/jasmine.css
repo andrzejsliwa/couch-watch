@@ -5,7 +5,11 @@ body {
 
 a {
   text-decoration:none;
-  color: black;
+  color: #5A753D;
+}
+
+.logo a:visited {
+  color: #5A753D;
 }
 
 .jasmine_reporter .failed a:visited, .jasmine_reporter .failed {
