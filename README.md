@@ -8,14 +8,21 @@
 May be freely distributed under the [MIT license](https://github.com/andrzejsliwa/couch-watch/raw/master/LICENSE).
 
 To suggest a feature, report a bug, or general discussion:
+==========================================================
 
-  [Issues](http://github.com/andrzejsliwa/couch-watch/issues/)
+  * [Issues](http://github.com/andrzejsliwa/couch-watch/issues/)
+  * [Wiki](http://github.com/andrzejsliwa/couch-watch/wiki/)
+
+Related projects:
+=================
   
+  * [couch-watch-js](https://github.com/andrzejsliwa/couch-watch-js)
+  * [couch-watch-rb](https://github.com/andrzejsliwa/couch-watch-rb)
 
 Installation & first run:
 =========================
  
-  $ bundle install
-  $ cp .couchapprc.example .couchapprc  # customize .couchpprc here
-  $ soca push
+    $ bundle install
+    $ cp .couchapprc.example .couchapprc  # customize .couchpprc here
+    $ soca push
   
