@@ -14,7 +14,6 @@ Backbone.couchConnector = {
   // Enable updates via the couchdb _changes feed
   enableChanges : false,
 
-  autoRestart : true,
   // If `baseUrl` is set, the default uri of jquery.couch.js will be overridden.
   // This is useful if you want to access a couch on another server e.g. `http://127.0.0.1:5984`
   // Important: Be aware of the Cross-Origin Policy.
@@ -45,26 +44,22 @@ Backbone.couchConnector = {
     return db;
   },
 
-  handleRestartApplicaton : function() {
-    var db = this.makeDb(this.databaseName);
-    var autoRestart = this.autoRestart;
+
+  designDocChange : function(callback) {
+    var db = this.makeDb(this.databaseName),
+      currentDoc = "_design/" + this.ddocName;
     db.info({
       success : function(data){
         var since = (data.update_seq || 0)
         // Connect to the changes feed.
         var changesFeed = db.changes(since,{include_docs:true});
         changesFeed.onChange(function(changes) {
-          console.log(changes);
-          var currentDoc = "_design/" + this.ddocName;
-          if (_.select(changes.results, function(doc) { return doc.id === currentDoc})) {
-            if (autoRestart) {
-              console.log("Detected Application changes, restarting tests.");
-              window.location.reload();
-            }
+          if (_.select(changes.results, function(doc) { return doc.id === currentDoc}).length > 0) {
+            callback(currentDoc);
           }
         });
       }
-    });
+    })
   },
 
   // Fetches all docs from the given collection.

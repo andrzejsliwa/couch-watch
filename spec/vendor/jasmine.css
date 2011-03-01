@@ -3,6 +3,10 @@ body {
   font-size: 1.1em;
 }
 
+.warning {
+  color: #993300;
+}
+
 a {
   text-decoration:none;
   color: #5A753D;

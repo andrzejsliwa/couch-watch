@@ -20,7 +20,12 @@
         Backbone.couchConnector.ddocName = "couchwatch";
         Backbone.couchConnector.viewName = "byCollection";
         Backbone.couchConnector.enableChanges = true;
-        Backbone.couchConnector.handleRestartApplicaton();
+        Backbone.couchConnector.designDocChange(function(ddocName){
+          console.log("current ddoc: '" + ddocName + "' changed");
+          console.log("restarting...");
+          window.location.reload();
+
+        });
       })
       .script("js/couchwatch.js")
       .script("spec/vendor/jasmine.js").wait()
@@ -43,6 +48,7 @@
     </script>
   </head>
   <body>
+    <span class="warning">Autorestart Enabled: Make sure that only one testing window is open !!!</span>
     <div id="content">
     </div>
   </body>
