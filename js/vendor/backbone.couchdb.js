@@ -32,7 +32,6 @@ Backbone.couchConnector = {
     if(split.length > 1){
       collectionName = split[0];
     }
-    console.log(collectionName);
     return collectionName;
   },
   // Creates a couchDB object from the given model object.
@@ -81,9 +80,10 @@ Backbone.couchConnector = {
     // Query equals ddocName/viewName
     db.view(query,{
       // Only return docs that have this collection's name as key.
-      descending: descending,
+      //descending: descending,
       keys : [collection],
       success:function(result){
+        console.log(result.rows)
         if(result.rows.length > 0){
           var arr = [];
           var model = {};
@@ -244,6 +244,31 @@ Backbone.couchConnector = {
       }
     }
     return { "coll" : coll , "elem" : elem};
+  },
+
+  destroyAllData : function() {
+    var db = this.makeDb(this.databaseName),
+      currentDoc = "_design/" + this.ddocName;
+    db.allDocs({
+      success: function(result) {
+        var docs = _.select(result.rows, function(doc) {
+          return doc.id !== currentDoc;
+        });
+
+        if (docs.length > 0) {
+
+          var toRemove = _.map(docs, function(doc) {
+            return { "_rev": doc.value.rev, "_id": doc.id };
+          });
+          db.bulkRemove({ docs:toRemove }, {
+            success: function() {
+            },
+            error: function(response_code, msg) {
+            }
+          });
+        }
+      }
+    });
   }
 };
 
@@ -256,8 +281,9 @@ Backbone.sync = function(method, model, success, error) {
     // Decide whether to read a whole collection or just one specific model
     if(model.collection)
       Backbone.couchConnector.readModel(model, success, error);
-    else
+    else {
       Backbone.couchConnector.readCollection(model, success, error);
+    }
   }else if(method == "delete"){
     Backbone.couchConnector.del(model, success, error);
   }

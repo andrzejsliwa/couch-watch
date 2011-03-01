@@ -21,13 +21,13 @@ def push(dbname, appname, growl)
   growl.notify("CouchApp AutoPush", "CouchAPP '#{appname}' Pushed", "default & test", 1, true)
   couch = CouchRest.new("http://localhost:5984")
   db = couch.database!(dbname)
-  puts "cleanup test database!"
-  db.documents["rows"].each do |doc|
-    unless doc["id"] == "_design/#{appname}"
-      puts "removing : #{doc}"
-      db.delete_doc({"_id" => doc["id"], "_rev" => doc["value"]["rev"]})
-    end
-  end
+#  puts "cleanup test database!"
+#  db.documents["rows"].each do |doc|
+#    unless doc["id"] == "_design/#{appname}"
+#      puts "removing : #{doc}"
+#      db.delete_doc({"_id" => doc["id"], "_rev" => doc["value"]["rev"]})
+#    end
+#  end
 
   run "soca push test"
   run "soca push"

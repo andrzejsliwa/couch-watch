@@ -16,6 +16,7 @@
       .script("js/vendor/backbone.js").wait()
       .script("js/vendor/backbone.couchdb.js").wait(function() {
 
+
         Backbone.couchConnector.databaseName = "couchwatch-test";
         Backbone.couchConnector.ddocName = "couchwatch";
         Backbone.couchConnector.viewName = "byCollection";
@@ -25,9 +26,12 @@
           console.log("restarting...");
           window.location.reload();
 
+
         });
+        Backbone.couchConnector.destroyAllData();
       })
       .script("js/couchwatch.js")
+      .script("js/client/src/couchwatch.js")
       .script("spec/vendor/jasmine.js").wait()
       .script("spec/vendor/jasmine.html.js")
       .script("spec/vendor/jasmine.jquery.js")
