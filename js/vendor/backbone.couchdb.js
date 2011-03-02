@@ -45,20 +45,7 @@ Backbone.couchConnector = {
 
 
   designDocChange : function(callback) {
-    var db = this.makeDb(this.databaseName),
-      currentDoc = "_design/" + this.ddocName;
-    db.info({
-      success : function(data){
-        var since = (data.update_seq || 0)
-        // Connect to the changes feed.
-        var changesFeed = db.changes(since,{include_docs:true});
-        changesFeed.onChange(function(changes) {
-          if (_.select(changes.results, function(doc) { return doc.id === currentDoc}).length > 0) {
-            callback(currentDoc);
-          }
-        });
-      }
-    })
+    this.ddocChangeHandler = callback;
   },
 
   // Fetches all docs from the given collection.
@@ -182,19 +169,26 @@ Backbone.couchConnector = {
   // If `enableChanges` is true the connector automatically listens to changes in the database
   // and updates the changed models. -> Remotely triggered events in your models and collections. YES!
   _changes : function(model){
-    var db = this.makeDb(model);
-    var connector = this;
+    var db = this.makeDb(model),
+      connector = this,
+      currentDoc = "_design/" + this.ddocName;
     // First grab the `update_seq` from the database info, so that we only receive newest changes.
     db.info({
       success : function(data){
-        var since = (data.update_seq || 0)
+        var since = (data.update_seq || 0);
         // Connect to the changes feed.
         connector.changesFeed = db.changes(since,{include_docs:true});
         connector.changesFeed.onChange(function(changes){
           var doc,coll,model,ID;
           // Iterate over the changed docs and validate them.
           for (var i=0; i < changes.results.length; i++) {
+
             doc = changes.results[i].doc;
+            if (typeof connector.ddocChangeHandler === "function" && (doc._id === currentDoc || doc.id === currentDoc)) {
+              connector.ddocChangeHandler(currentDoc);
+              continue;
+            }
+
             if(doc.collection){
               coll = connector._watchList[doc.collection];
               if(coll){
