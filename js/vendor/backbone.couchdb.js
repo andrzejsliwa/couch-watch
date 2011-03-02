@@ -65,7 +65,7 @@ Backbone.couchConnector = {
 
     var descending = coll.descending || false;
     // Query equals ddocName/viewName
-    db.view(query,{
+    var opt = {
       // Only return docs that have this collection's name as key.
       descending: descending,
       keys : [collection],
@@ -88,7 +88,13 @@ Backbone.couchConnector = {
         }
       },
       error: _error
-    });
+    };
+
+    if (coll.limit) {
+      opt.limit = coll.limit;
+    }
+    db.view(query, opt);
+
     // Add the collection to the `_watchlist`.
     if(!this._watchList[collection]){
       this._watchList[collection] = coll;
