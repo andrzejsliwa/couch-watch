@@ -80,10 +80,9 @@ Backbone.couchConnector = {
     // Query equals ddocName/viewName
     db.view(query,{
       // Only return docs that have this collection's name as key.
-      //descending: descending,
+      descending: descending,
       keys : [collection],
       success:function(result){
-        console.log(result.rows)
         if(result.rows.length > 0){
           var arr = [];
           var model = {};

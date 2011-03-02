@@ -1,9 +1,11 @@
 describe("CouchWatch JavaScript Client", function() {
+
   it("it should be available", function () {
     expect(couchwatch.enableCouchWatch).toBeDefined();
   });
 
   it("should push logs to CouchWatch Service", function () {
+
     runs(function() {
       window.Items = new ItemsList();
 

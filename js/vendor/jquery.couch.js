@@ -437,7 +437,6 @@
               doc._deleted = true;
             }
           );
-          console.log(docs.docs);
           $.extend(options, {successStatus: 201});
           ajax({
               type: "POST",
