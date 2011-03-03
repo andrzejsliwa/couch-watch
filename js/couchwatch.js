@@ -88,6 +88,7 @@ $(function(){
 
 
     render: function () {
+      Items.models = Items.models.slice(0, 100);
       this.$("#item-list").html("");
       Items.each(function(item) {
         var view = new ItemView({model: item});
