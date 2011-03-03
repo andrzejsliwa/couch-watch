@@ -147,7 +147,7 @@ Backbone.couch = {
     db.info( {
       success: function ( data ) {
         var since = ( data.update_seq || 0);
-        that.changesFeed = db.changes( since, { include_docs: true } );
+        that.changesFeed = db.changes( since, { include_docs: true, limit:1 } );
         that.changesFeed.onChange( function( changes ) {
           _.each( changes.results, function( row ) {
             var doc = row.doc;
