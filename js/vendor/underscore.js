@@ -259,6 +259,7 @@
     var low = 0, high = array.length;
     while (low < high) {
       var mid = (low + high) >> 1;
+//      console.log(iterator(obj));
       iterator(array[mid]) < iterator(obj) ? low = mid + 1 : high = mid;
     }
     return low;

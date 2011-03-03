@@ -159,7 +159,6 @@
     // Set a hash of model attributes on the object, firing `"change"` unless you
     // choose to silence it.
     set : function(attrs, options) {
-
       // Extract attributes and options.
       options || (options = {});
       if (!attrs) return this;
@@ -175,6 +174,7 @@
       // Update attributes.
       for (var attr in attrs) {
         var val = attrs[attr];
+
         if (!_.isEqual(now[attr], val)) {
           now[attr] = val;
           delete escaped[attr];
@@ -539,6 +539,7 @@
       this._byCid[model.cid] = model;
       model.collection = this;
       var index = this.comparator ? this.sortedIndex(model, this.comparator) : this.length;
+//      console.log(this.sortedIndex(model, this.comparator))
       this.models.splice(index, 0, model);
       model.bind('all', this._boundOnModelEvent);
       this.length++;

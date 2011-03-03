@@ -37,7 +37,7 @@ couchwatch.debug("ello" + new Date());
     pause: false,
 
     comparator: function(todo) {
-      return - todo.get('created_at');
+      return new Date(todo.get('created_at'));
     }
   });
 
@@ -51,13 +51,19 @@ couchwatch.debug("ello" + new Date());
     template: _.template('<%= id %> - <span class="severity"><%= severity %></span> - <span class="message"><%= created_at %> : </br></br><%= message %></span>'),
 
     initialize: function() {
-      _.bindAll(this, 'render');
+      _.bindAll(this, 'render', 'unrender');
       this.model.bind('change', this.render);
       this.model.view = this;
     },
 
+    unrender: function() {
+      $(this.model.el).remove();
+      return this;
+    },
+
     render: function() {
       $(this.el).html(this.template(this.model.toJSON()));
+      this.model.el = this.el;
       return this;
     }
 
@@ -67,50 +73,54 @@ couchwatch.debug("ello" + new Date());
     el: $("#items"),
 
     events : {
-      "click .pause" : "pause",
-      "click .add" : "add",
-      "click button": "search"
+      "click #pause": "pause",
+      "click #refresh": "refresh",
+      "click #add": "add",
+      "keypress #items input": "search"
+
     },
 
     initialize: function() {
       //console.log("in");
       this.items_element = $("#item-list");
-      _.bindAll(this,'render', 'pause', 'add', 'addNew', 'search');
-      Items.bind('add', this.addNew);
+      _.bindAll(this, 'renderNew', 'render', 'pause', 'add', 'search', 'refresh');
+      Items.bind('add', this.renderNew);
       Items.bind('refresh', this.render);
       Items.fetch();
     },
 
-    search: function() {
-      this.$(".pause").html(Items.pause ? "continue" : "pause");
-      var input = this.$("input");
-      this.search = input.val();
-      this.$("#search-text").text("Search: '"+ this.search + "'");
-      input.val("");
+    refresh: function () {
+      this.render();
+      return false;
     },
-
 
     add: function () {
       Items.create({"created_at": new Date(), "message": "message", "severity": "debug"});
       return false;
     },
 
+    search: function(e) {
+      if (e.keyCode != 13) return;
+      this.$("#pause").html(Items.pause ? "continue" : "pause");
+      var input = this.$("input");
+      this.search = input.val();
+      this.$("#search-text").text("Wait for : '"+ this.search + "'");
+      input.val("");
+    },
+
     pause: function () {
       Items.pause = !Items.pause;
-      this.$(".pause").html(Items.pause ? "continue" : "pause");
+      this.$("#pause").html(Items.pause ? "continue" : "pause");
       if (!Items.pause)
         Items.fetch();
       return false;
     },
 
-    addNew: function (item) {
-      Items.models.shift();
-      //console.log(Items.models.length);
-      var view = new ItemView({model: item});
+    renderNew: function (item) {
+      var old = Items.models.shift();
       if (!Items.pause) {
-        var all = $("#items li");
-        $(all[all.length - 1]).remove();
-        var el = $(view.render().el);
+        new ItemView({model: old}).unrender();
+        var el = $(new ItemView({model: item}).render().el);
         this.items_element.prepend(el);
         if (this.search) {
           if (el.text().search(this.search) > 0) {
@@ -123,9 +133,8 @@ couchwatch.debug("ello" + new Date());
       }
     },
 
-
     render: function () {
-      Items.models = Items.models.slice(0, 100);
+      Items.models = Items.models.slice(0, Items.limit);
       this.items_element.html("");
       var that = this;
       Items.each(function(item) {
