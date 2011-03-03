@@ -74,7 +74,7 @@ couchwatch.debug("ello" + new Date());
 
     initialize: function() {
       //console.log("in");
-
+      this.items_element = $("#item-list");
       _.bindAll(this,'render', 'pause', 'add', 'addNew', 'search');
       Items.bind('add', this.addNew);
       Items.bind('refresh', this.render);
@@ -111,7 +111,7 @@ couchwatch.debug("ello" + new Date());
         var all = $("#items li");
         $(all[all.length - 1]).remove();
         var el = $(view.render().el);
-        $("#item-list").prepend(el);
+        this.items_element.prepend(el);
         if (this.search) {
           if (el.text().search(this.search) > 0) {
             this.search = null;
@@ -126,10 +126,11 @@ couchwatch.debug("ello" + new Date());
 
     render: function () {
       Items.models = Items.models.slice(0, 100);
-      this.$("#item-list").html("");
+      this.items_element.html("");
+      var that = this;
       Items.each(function(item) {
         var view = new ItemView({model: item});
-        $("#item-list").prepend(view.render().el);
+        that.items_element.prepend(view.render().el);
       });
     }
 
