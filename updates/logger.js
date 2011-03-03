@@ -5,6 +5,6 @@ function (doc, req) {
   newDoc.severity = req.form.severity;
   newDoc.message = req.form.message;
   newDoc.peer = req.peer;
-  newDoc.collection = "logger";
+  newDoc.type = "logger";
   return [newDoc, "ok"]
 }

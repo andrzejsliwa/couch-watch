@@ -1,29 +1,41 @@
 $(function(){
   couchwatch.enableCouchWatch("http://localhost:5984/couchwatch");
-  couchwatch.debug("ello");
+  couchwatch.debug("ello" + new Date());
 
   window.Item = Backbone.Model.extend({
-    url: "/logger"
+    url: "logger"
   });
 
   window.ItemsList = Backbone.Collection.extend({
-    url: "/logger",
+    url: "allLoggers",
     descending: true,
-    limit: 10,
+    limit: 5,
     model: Item,
     pause: false,
 
     comparator: function(todo) {
-      return todo.get('created_at');
+      return - todo.get('created_at');
     }
   });
 
   window.Items = new ItemsList();
 
+//  Items.sortBy(function(item) {
+//    return - item.get("created_at");
+//  });
+
+//  Items.create({"created_at": new Date(), "message": "message", "severity": "debug"}, {
+//    success: function() {
+//      Items.first().fetch();
+//      //Items.first().destroy();
+//    }
+//  });
+
+
   window.ItemView = Backbone.View.extend({
     tagName: "li",
 
-    template: _.template('<span class="severity"><%= severity %></span> - <span class="message"><%= created_at %> : </br></br><%= message %></span>'),
+    template: _.template('<%= id %> - <span class="severity"><%= severity %></span> - <span class="message"><%= created_at %> : </br></br><%= message %></span>'),
 
     initialize: function() {
       _.bindAll(this, 'render');
@@ -42,34 +54,47 @@ $(function(){
     el: $("#items"),
 
     events : {
-      "click a" : "pause"
+      "click .pause" : "pause",
+      "click .add" : "add"
     },
 
     initialize: function() {
       console.log("in");
 
-      _.bindAll(this,'addOne', 'addAll', 'pause');
-      Items.bind('add', this.addOne);
-      Items.bind('refresh', this.addAll);
+      _.bindAll(this,'render', 'pause', 'add', 'addNew');
+      Items.bind('add', this.addNew);
+      Items.bind('refresh', this.render);
       Items.fetch();
+    },
+
+    add: function () {
+      Items.create({"created_at": new Date(), "message": "message", "severity": "debug"});
+      return false;
     },
 
     pause: function () {
       Items.pause = !Items.pause;
-      this.$("a").html(Items.pause ? "continue" : "pause");
+      this.$(".pause").html(Items.pause ? "continue" : "pause");
+      if (!Items.pause)
+        Items.fetch();
       return false;
     },
 
-    addAll: function () {
-      Items.each(this.addOne);
+    addNew: function (item) {
+      var view = new ItemView({model: item});
+      if (!Items.pause)
+        $("#item-list").prepend(view.render().el);
     },
 
-    addOne: function (item) {
-      var view = new ItemView({model: item});
-      if (!Items.pause) {
-        this.$("#item-list").prepend(view.render().el)
-      }
+
+    render: function () {
+      this.$("#item-list").html("");
+      Items.each(function(item) {
+        var view = new ItemView({model: item});
+        $("#item-list").prepend(view.render().el);
+      });
     }
+
   });
   new AllItemsView();
 });

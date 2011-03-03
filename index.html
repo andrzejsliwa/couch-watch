@@ -13,14 +13,14 @@
       .script("js/vendor/jquery.couch.js").wait()
       .script("js/vendor/underscore.js").wait()
       .script("js/vendor/backbone.js").wait()
-      .script("js/vendor/backbone.couchdb.js").wait(function() {
+      .script("js/vendor/backbone.couch.js").wait(function() {
 
         window.CouchWatch = {};
-        Backbone.couchConnector.databaseName = "couchwatch";
-        Backbone.couchConnector.ddocName = "couchwatch";
-        Backbone.couchConnector.viewName = "byCollection";
-        Backbone.couchConnector.enableChanges = true;
-        Backbone.couchConnector.designDocChange(function(ddocName){
+
+        Backbone.couch.databaseName = "couchwatch";
+        Backbone.couch.ddocName = "couchwatch";
+        Backbone.couch.enableChangesFeed = true;
+        Backbone.couch.ddocChange(function(ddocName){
           console.log("current ddoc: '" + ddocName + "' changed");
           console.log("restarting...");
           window.location.reload();
@@ -33,7 +33,8 @@
   <body>
     <div id="content">
       <div id="items">
-        <a href="">pause</a>
+        <a href="" class="pause">pause</a>
+        <a href="" class="add">add</a>
         <ul id="item-list">
 
         </ul>
