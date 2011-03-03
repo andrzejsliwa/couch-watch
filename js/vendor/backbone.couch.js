@@ -39,7 +39,7 @@ Backbone.couch = {
   },
 
   log: function ( message ) {
-    if ( console && console.log ) {
+    if ( this.debug && console && console.log ) {
       console.log( "Backbone.couch - " + message );
     }
   },
@@ -147,7 +147,7 @@ Backbone.couch = {
     db.info( {
       success: function ( data ) {
         var since = ( data.update_seq || 0);
-        that.changesFeed = db.changes( since, { include_docs: true, limit:1 } );
+        that.changesFeed = db.changes( since, { include_docs: true, limit:100 } );
         that.changesFeed.onChange( function( changes ) {
           _.each( changes.results, function( row ) {
             var doc = row.doc;
@@ -158,10 +158,8 @@ Backbone.couch = {
               that.ddocChangeHandler(currentDdoc);
             }
 
-            console.log( doc);
             if ( doc.type ) {
               var collection = that._watchList[ doc.type ];
-              console.log(that._watchList);
               if ( collection ) {
                 var model = collection.get( id );
                 if ( model ) {

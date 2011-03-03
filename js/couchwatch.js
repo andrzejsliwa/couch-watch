@@ -68,17 +68,27 @@ couchwatch.debug("ello" + new Date());
 
     events : {
       "click .pause" : "pause",
-      "click .add" : "add"
+      "click .add" : "add",
+      "click button": "search"
     },
 
     initialize: function() {
-      console.log("in");
+      //console.log("in");
 
-      _.bindAll(this,'render', 'pause', 'add', 'addNew');
+      _.bindAll(this,'render', 'pause', 'add', 'addNew', 'search');
       Items.bind('add', this.addNew);
       Items.bind('refresh', this.render);
       Items.fetch();
     },
+
+    search: function() {
+      this.$(".pause").html(Items.pause ? "continue" : "pause");
+      var input = this.$("input");
+      this.search = input.val();
+      this.$("#search-text").text("Search: '"+ this.search + "'");
+      input.val("");
+    },
+
 
     add: function () {
       Items.create({"created_at": new Date(), "message": "message", "severity": "debug"});
@@ -95,12 +105,21 @@ couchwatch.debug("ello" + new Date());
 
     addNew: function (item) {
       Items.models.shift();
-      console.log(Items.models.length);
+      //console.log(Items.models.length);
       var view = new ItemView({model: item});
       if (!Items.pause) {
         var all = $("#items li");
         $(all[all.length - 1]).remove();
-        $("#item-list").prepend(view.render().el);
+        var el = $(view.render().el);
+        $("#item-list").prepend(el);
+        if (this.search) {
+          if (el.text().search(this.search) > 0) {
+            this.search = null;
+            this.$("#search-text").text("");
+            el.css("background-color", "yellow");
+            this.pause();
+          }
+        }
       }
     },
 
