@@ -1,4 +1,4 @@
-function (doc, req) {
+function logger(doc, req) {
   var newDoc = {};
   newDoc._id = req.uuid;
   newDoc.created_at = new Date();
