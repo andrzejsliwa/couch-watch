@@ -16,6 +16,7 @@ Related projects:
 
   - https://github.com/andrzejsliwa/couch-watch-js - CouchWatch JavaScript Client
   - https://github.com/andrzejsliwa/couch-watch-rb - CouchWatch Ruby Client
+  - https://github.com/andrzejsliwa/backbone-couch - Backbone.js CouchDB connector
 
 Installation & first run:
 
