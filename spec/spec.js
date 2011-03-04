@@ -1,7 +1,7 @@
 describe("CouchWatch JavaScript Client", function() {
 
   it("it should be available", function () {
-    expect(couchwatch.enableCouchWatch).toBeDefined();
+    expect(window.couchwatch.enableCouchWatch).toBeDefined();
   });
 
   it("should push logs to CouchWatch Service", function () {
@@ -9,8 +9,8 @@ describe("CouchWatch JavaScript Client", function() {
     runs(function() {
       window.Items = new ItemsList();
 
-      couchwatch.enableCouchWatch("http://localhost:5984/couchwatch-test");
-      couchwatch.debug("ello");
+      window.couchwatch.enableCouchWatch("http://localhost:5984/couchwatch-test");
+      window.couchwatch.debug("ello");
     });
 
     waitsFor(function() {

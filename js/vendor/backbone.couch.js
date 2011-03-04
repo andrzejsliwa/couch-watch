@@ -194,6 +194,31 @@ Backbone.couch = {
     }
     // if url is function evaluate else use as value
     return _.isFunction( collection.url ) ? collection.url() : collection.url;
+  },
+
+  destroyAllData : function() {
+    this.log( "ddocChange" );
+
+    var db = this.db(),
+      currentDoc = "_design/" + this.ddocName;
+
+    db.allDocs({
+      success: function( result ) {
+        var docs = _.select( result.rows, function( doc ) {
+          return doc.id !== currentDoc;
+        });
+
+        if (docs.length > 0) {
+          var toRemove = _.map( docs, function( doc ) {
+            return { "_rev": doc.value.rev, "_id": doc.id };
+          });
+          db.bulkRemove({ docs:toRemove }, {
+            success: function() {},
+            error: function() {}
+          });
+        }
+      }
+    });
   }
 };
 

@@ -1,29 +1,4 @@
 $(function(){
-//    var changesFeed = null;
-//
-//    var db = $.couch.db("couchwatch");
-//
-//    db.info( {
-//      success: function ( data ) {
-//        var since = ( data.update_seq || 0);
-//        changesFeed = db.changes( since, { include_docs: true, limit: 100 } );
-//        changesFeed.onChange( function( changes ) {
-//          _.each( changes.results, function( row ) {
-//            var doc = row.doc;
-//            if ( doc.type == "logger") {
-//              result = "<li><span class='severity'>" + doc.severity + "</span> - <span class='message'>" + doc.created_at + "</br></br>" + doc.message + "</span></li>";
-//              $("#item-list").prepend($(result));
-//            }
-//          })
-//        });
-//      },
-//      error: function () {
-//      }
-//    });
-
-
-couchwatch.enableCouchWatch("http://localhost:5984/couchwatch");
-couchwatch.debug("ello" + new Date());
 
   window.Item = Backbone.Model.extend({
     url: "logger"
@@ -100,7 +75,6 @@ couchwatch.debug("ello" + new Date());
     },
 
     search: function(e) {
-      if (e.keyCode != 13) return;
       this.$("#pause").html(Items.pause ? "continue" : "pause");
       var input = this.$("input");
       this.search = input.val();
@@ -124,6 +98,7 @@ couchwatch.debug("ello" + new Date());
         this.items_element.prepend(el);
         if (this.search) {
           if (el.text().search(this.search) > 0) {
+            el.html(el.text().replace(this.search, "<strong>" + this.search +"</strong>"));
             this.search = null;
             this.$("#search-text").text("");
             el.css("background-color", "yellow");
