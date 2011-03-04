@@ -21,8 +21,10 @@
         Backbone.couch.ddocName = "couchwatch";
         Backbone.couch.enableChangesFeed = true;
         Backbone.couch.ddocChange(function(ddocName){
-          console.log("current ddoc: '" + ddocName + "' changed");
-          console.log("restarting...");
+          if (console && console.log) {
+            console.log("current ddoc: '" + ddocName + "' changed");
+            console.log("restarting...");
+          }
           window.location.reload();
         });
       })
