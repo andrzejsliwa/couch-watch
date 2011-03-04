@@ -76,7 +76,7 @@ couchwatch.debug("ello" + new Date());
       "click #pause": "pause",
       "click #refresh": "refresh",
       "click #add": "add",
-      "keypress #items input": "search"
+      "click #wait_for": "search"
 
     },
 
