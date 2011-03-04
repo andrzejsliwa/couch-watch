@@ -36,9 +36,17 @@ $(function(){
       return this;
     },
 
-    render: function() {
-      $(this.el).html(this.template(this.model.toJSON()));
-      this.model.el = this.el;
+    render: function(search) {
+      var el = $(this.el);
+      el.html(this.template(this.model.toJSON()));
+      this.model.el = el;
+      if (search) {
+        if (el.text().search(search) > 0) {
+          el.html(el.text().replace(search, "<strong>" + search +"</strong>"));
+          el.css("background-color", "yellow");
+          this.el.matched = true;
+        }
+      }
       return this;
     }
 
@@ -58,7 +66,7 @@ $(function(){
     initialize: function() {
       //console.log("in");
       this.items_element = $("#item-list");
-      _.bindAll(this, 'renderNew', 'render', 'pause', 'add', 'search', 'refresh');
+      _.bindAll(this, 'renderNew', 'render', 'pause', 'add', 'search', 'refresh', 'showSearch');
       Items.bind('add', this.renderNew);
       Items.bind('refresh', this.render);
       Items.fetch();
@@ -94,17 +102,9 @@ $(function(){
       var old = Items.models.shift();
       if (!Items.pause) {
         new ItemView({model: old}).unrender();
-        var el = $(new ItemView({model: item}).render().el);
+        var el = new ItemView({model: item}).render(this.search).el;
         this.items_element.prepend(el);
-        if (this.search) {
-          if (el.text().search(this.search) > 0) {
-            el.html(el.text().replace(this.search, "<strong>" + this.search +"</strong>"));
-            this.search = null;
-            this.$("#search-text").text("");
-            el.css("background-color", "yellow");
-            this.pause();
-          }
-        }
+        if (el.matched) this.pause();
       }
     },
 
@@ -113,8 +113,9 @@ $(function(){
       this.items_element.html("");
       var that = this;
       Items.each(function(item) {
-        var view = new ItemView({model: item});
-        that.items_element.prepend(view.render().el);
+        var view = new ItemView({model: item}),
+          el = view.render(this.search).el;
+        that.items_element.prepend(el);
       });
     }
 
